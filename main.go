@@ -1,12 +1,12 @@
 package main
 
 import (
-	"fmt"
 	"io/ioutil"
 	"log"
 	"os"
 	"strings"
 
+	"github.com/chasestarr/dbcineplex_bot/twitter"
 	"github.com/mmcdole/gofeed"
 	"golang.org/x/net/html"
 )
@@ -111,9 +111,9 @@ func main() {
 		// item.Title
 		// item.Link
 		// item.Guid
-		images := getImages(item.Description)
-		fmt.Println(images)
 		if !itemInCache(item.GUID) {
+			images := getImages(item.Description)
+			twitter.Tweet(item.Title+"\n"+item.Link, images)
 			addItemToCache(item.GUID)
 		}
 	}

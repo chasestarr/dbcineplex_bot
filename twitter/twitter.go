@@ -1,6 +1,7 @@
 package twitter
 
 import (
+	"log"
 	"os"
 
 	"github.com/chasestarr/go-twitter/twitter"
@@ -16,7 +17,24 @@ func init() {
 	client = twitter.NewClient(httpClient)
 }
 
+func uploadImage(uri string) int64 {
+	twitterRes, _, err := client.Media.UploadFile(uri)
+	if err != nil {
+		log.Fatal(err)
+	}
+	return twitterRes.MediaID
+}
+
 // Tweet sends a tweet
-func Tweet(data twitter.Tweet) {
-	// client.Statuses.Update()
+func Tweet(text string, images []string) {
+	mediaIds := []int64{}
+	for _, image := range images {
+		mediaIds = append(mediaIds, uploadImage(image))
+	}
+
+	updateParams := &twitter.StatusUpdateParams{MediaIds: mediaIds}
+	_, _, err := client.Statuses.Update(text, updateParams)
+	if err != nil {
+		log.Fatal(err)
+	}
 }
