@@ -3,7 +3,7 @@ package twitter
 import (
 	"os"
 
-	"github.com/dghubble/go-twitter/twitter"
+	"github.com/chasestarr/go-twitter/twitter"
 	"github.com/dghubble/oauth1"
 )
 
